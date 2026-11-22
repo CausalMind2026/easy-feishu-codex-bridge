@@ -1,18 +1,42 @@
-# Easy Feishu Codex Bridge
+<h1 align="center">Easy Feishu Codex Bridge</h1>
 
-[简体中文](README.md) · English
+<p align="center"><strong>Message your Agent Team Lead from Lark/Feishu.</strong></p>
 
-**Message your Agent Team Lead from Lark/Feishu.**
+<p align="center">
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#connect-an-agent-team">Connect an Agent Team</a> ·
+  <a href="#linux-deployment">Linux deployment</a> ·
+  <a href="README.md">简体中文</a>
+</p>
 
-![A person sends a screenshot in Lark, and the Team Lead Agent and two teammate agents handle the task on a server](docs/assets/team-lead-cover.jpg)
+<p align="center">
+  <img src="docs/assets/team-lead-cover.jpg" alt="A Lark message with a screenshot reaches a Team Lead Agent and its teammates on a server" width="960">
+</p>
 
-Send a task to `@Team Lead` in Lark, with a screenshot or log if needed. Codex CLI runs on your server, and the bridge replies to the original message. Quote a reply to continue in the same Codex conversation.
+Send tasks, screenshots, and logs in Lark. Codex CLI runs on your server, and the bridge replies to the original message. Quote that reply to pick up the same task.
 
-> **You** · @Team Lead Check this startup log and find the first error.
->
-> **Follow-up** · Quote the reply and ask, “Can you add a regression test for it?”
+## Debug a startup failure in Lark
 
-[Connect an Agent Team](#connect-an-agent-team) · [Linux deployment](#linux-deployment) · [Configuration](#configuration) · [Local tests](#local-tests)
+1. **Send the task.** Upload a startup log, quote it, and mention `@Team Lead`. “Find the first error and tell me where to start.”
+2. **Follow up.** Quote the Team Lead's reply and ask, “Can you add a regression test that reproduces it?”
+3. **Switch tasks.** Start a separate session with `新任务: Check another server's deployment log`. Quote an earlier reply to return to that task.
+
+Both direct messages and group mentions support attachments and follow-ups. In groups, the bot accepts messages that mention it from senders on the allowlist.
+
+## Quick start
+
+You’ll need a Linux server with systemd, Python 3, `lark-cli`, `codex`, and your own Lark/Feishu bot app.
+
+```bash
+git clone https://github.com/CausalMind2026/easy-feishu-codex-bridge.git
+cd easy-feishu-codex-bridge
+```
+
+1. Configure the [Lark message event](#direct-messages-and-group-mentions) and publish your bot app. For group mentions, add the bot to the target group.
+2. Follow [Linux deployment](#linux-deployment) to install the service and authenticate Lark and Codex as the service account. Fill in `ALLOWED_SENDER_IDS` before starting the service.
+3. Send `ping` to the bot in a direct message. Once it replies `pong`, send a task or a screenshot.
+
+[Configuration](#configuration) · [Local tests](#local-tests)
 
 ## Connect an Agent Team
 

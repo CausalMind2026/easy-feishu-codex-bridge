@@ -1,18 +1,42 @@
-# Easy Feishu Codex Bridge
+<h1 align="center">Easy Feishu Codex Bridge</h1>
 
-简体中文 · [English](README.en.md)
+<p align="center"><strong>Message your Agent Team Lead from Lark/Feishu.</strong></p>
 
-**Message your Agent Team Lead from Lark/Feishu.**
+<p align="center">
+  <a href="#快速开始">快速开始</a> ·
+  <a href="#接入-agent-team">接入 Agent Team</a> ·
+  <a href="#linux-部署">Linux 部署</a> ·
+  <a href="README.en.md">English</a>
+</p>
 
-![左侧的人在飞书发送截图，右侧的 Team Lead Agent 和两个队友 Agent 在服务器端处理任务](docs/assets/team-lead-cover.jpg)
+<p align="center">
+  <img src="docs/assets/team-lead-cover.jpg" alt="在飞书发一条带截图的消息，服务器上的 Team Lead Agent 和队友接手处理" width="960">
+</p>
 
-在飞书里 `@Team Lead` 发任务，顺手带上截图或日志。服务器上的 Codex CLI 会把结果回复到原消息。引用回复，就能接着上一轮的上下文继续做。
+在飞书里发任务、截图和日志，由你服务器上的 Codex CLI 执行。结果回到原消息，引用回复就能继续同一个任务。
 
-> **你**　@Team Lead 帮我看这份启动日志，先定位第一条报错。
->
-> **追问**　引用 Team Lead 的回复，问「能给这个问题补一个回归测试吗？」
+## 在飞书里排查一次启动故障
 
-[接入 Agent Team](#接入-agent-team) · [Linux 部署](#linux-部署) · [环境变量](#配置) · [本地测试](#本地测试)
+1. **发任务。** 把启动日志发到群里，引用附件并 `@Team Lead`，发「找出第一条报错，告诉我从哪儿查起。」
+2. **接着做。** 引用 Team Lead 的回复，再问「能补一个复现这个问题的回归测试吗？」
+3. **切换任务。** 用 `新任务：检查另一台机器的部署日志` 开始新的会话。需要回到上一件事时，引用对应的旧回复。
+
+私聊和群聊都支持附件和续聊。群聊中，机器人只接收白名单成员明确 `@` 它的消息。
+
+## 快速开始
+
+准备一台使用 systemd 的 Linux 服务器、Python 3、`lark-cli`、`codex` 和你自己的飞书机器人应用。
+
+```bash
+git clone https://github.com/CausalMind2026/easy-feishu-codex-bridge.git
+cd easy-feishu-codex-bridge
+```
+
+1. 配置[飞书消息事件](#私聊和群聊)并发布机器人应用。使用群聊时，把机器人加入目标群。
+2. 按 [Linux 部署](#linux-部署) 安装服务，用服务账号登录飞书和 Codex。填写 `ALLOWED_SENDER_IDS` 后启动服务。
+3. 私聊机器人发送 `ping`。收到 `pong` 后，发送一条任务或一张截图。
+
+[环境变量](#配置) · [本地测试](#本地测试)
 
 ## 接入 Agent Team
 
@@ -34,7 +58,7 @@ lark-cli 回复原消息
 
 ## 功能说明
 
-### 私聊与群聊 @
+### 私聊和群聊
 
 worker 默认接受：
 
