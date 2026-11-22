@@ -1,0 +1,25 @@
+allow_managed_hooks_only = true
+
+[features]
+hooks = true
+
+[hooks]
+managed_dir = "/opt/codex-server-agent"
+
+[[hooks.PermissionRequest]]
+matcher = "^Bash$"
+
+[[hooks.PermissionRequest.hooks]]
+type = "command"
+command = "/usr/bin/python3 /opt/codex-server-agent/worker.py --codex-hook"
+timeout = 30
+statusMessage = "Recording sandbox approval request"
+
+[[hooks.PostToolUse]]
+matcher = "^Bash$"
+
+[[hooks.PostToolUse.hooks]]
+type = "command"
+command = "/usr/bin/python3 /opt/codex-server-agent/worker.py --codex-hook"
+timeout = 30
+statusMessage = "Sending sandbox approval audit"

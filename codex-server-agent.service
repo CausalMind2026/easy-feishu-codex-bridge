@@ -1,0 +1,27 @@
+[Unit]
+Description=Codex Server Agent for Feishu
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=codex-server-agent
+UMask=0077
+WorkingDirectory=/opt/codex-server-agent
+StateDirectory=codex-server-agent
+StateDirectoryMode=0700
+Environment=PYTHONUNBUFFERED=1
+Environment=CODEX_WORKDIR=/var/lib/codex-server-agent/workspace
+Environment=CODEX_TIMEOUT_SECONDS=7200
+Environment=MAX_REPLY_CHARS=10000
+Environment=SESSION_WINDOW_SECONDS=3600
+Environment=RESOURCE_RETENTION_DAYS=7
+Environment=ALLOWED_CHAT_TYPES=p2p,group
+EnvironmentFile=-/etc/codex-server-agent.env
+ExecStart=/usr/bin/python3 /opt/codex-server-agent/worker.py
+Restart=always
+RestartPreventExitStatus=78
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
